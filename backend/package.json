@@ -1,0 +1,32 @@
+{
+  "name": "hederamind-backend",
+  "version": "1.0.0",
+  "description": "HederaMind AI Agent backend — HOL Registry, HCS-10, Gemini",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon --exec \"node --max-old-space-size=4096 -r ts-node/register/transpile-only src/index.ts\"",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "register": "node --max-old-space-size=4096 -r ts-node/register/transpile-only scripts/register.ts",
+    "test": "node --max-old-space-size=4096 -r ts-node/register/transpile-only scripts/test.ts"
+  },
+  "dependencies": {
+    "@hashgraph/sdk": "^2.56.0",
+    "@langchain/core": "^0.3.43",
+    "@langchain/google-genai": "^0.1.8",
+    "@langchain/langgraph": "^0.2.60",
+    "langchain": "^0.3.20",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
+    "nodemon": "^3.0.3"
+  }
+}
