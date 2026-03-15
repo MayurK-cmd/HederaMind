@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "register": "node --max-old-space-size=4096 -r ts-node/register/transpile-only scripts/register.ts",
-    "test": "node --max-old-space-size=4096 -r ts-node/register/transpile-only scripts/test.ts"
+  "test":     "node --max-old-space-size=4096 -r ts-node/register/transpile-only scripts/test.ts"
   },
   "dependencies": {
     "@hashgraph/sdk": "^2.56.0",
