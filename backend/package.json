@@ -4,12 +4,12 @@
   "description": "HederaMind AI Agent backend — HOL Registry, HCS-10, Gemini",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon --exec \"node --max-old-space-size=4096 -r ts-node/register/transpile-only src/index.ts\"",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "register": "node --max-old-space-size=4096 -r ts-node/register/transpile-only scripts/register.ts",
+  "dev":   "nodemon --exec \"node --max-old-space-size=4096 -r ts-node/register/transpile-only src/index.ts\"",
+  "build": "echo 'No compile step — using ts-node at runtime'",
+  "start": "node --max-old-space-size=512 -r ts-node/register/transpile-only src/index.ts",
+  "register": "node --max-old-space-size=4096 -r ts-node/register/transpile-only scripts/register.ts",
   "test":     "node --max-old-space-size=4096 -r ts-node/register/transpile-only scripts/test.ts"
-  },
+},
   "dependencies": {
     "@hashgraph/sdk": "^2.56.0",
     "@langchain/core": "^0.3.43",
