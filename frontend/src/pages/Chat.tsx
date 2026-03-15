@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AgentCard } from "../components/AgentCard";
 import { ChatWindow } from "../components/ChatWindow";
-import type {ChatWindowHandle} from "../components/ChatWindow";
+import type { ChatWindowHandle } from "../components/ChatWindow";
 import { WalletPanel } from "../components/WalletPanel";
 import { HCSBroadcast } from "../components/HCSBroadcast";
 import { useAgent } from "../hooks/useAgent";
@@ -13,12 +13,10 @@ export function Chat() {
   const { agent, loading } = useAgent();
   const chatRef = useRef<ChatWindowHandle>(null);
 
-  // Handle initial message passed from Landing page example queries
   useEffect(() => {
     const state = location.state as { initialMessage?: string } | null;
     if (state?.initialMessage && chatRef.current) {
       chatRef.current.sendMessage(state.initialMessage);
-      // Clear the state so it doesn't re-fire on re-render
       window.history.replaceState({}, "");
     }
   }, [location.state]);
@@ -30,79 +28,80 @@ export function Chat() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-hedera-dark">
+    <div className="flex h-screen overflow-hidden bg-white text-[#1a1a1e]">
       {/* Sidebar */}
-      <aside className="w-72 shrink-0 border-r border-hedera-border flex flex-col p-4 gap-4 overflow-y-auto">
-
-        {/* Logo — click to go home */}
+      <aside className="w-80 shrink-0 border-r border-slate-100 flex flex-col bg-[#FBFBFC] p-6 gap-6 overflow-y-auto">
+        {/* Brand */}
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 py-1 hover:opacity-80 transition-opacity text-left"
+          className="flex items-center gap-3 py-2 hover:opacity-80 transition-all text-left group"
         >
-          <div className="w-8 h-8 rounded-lg bg-hedera-purple flex items-center justify-center text-sm font-bold shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-black flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg group-hover:rotate-6 transition-transform">
             H
           </div>
           <div>
-            <p className="font-semibold text-sm leading-tight">HederaMind</p>
-            <p className="text-[10px] text-gray-500">HOL Registry Agent</p>
+            <p className="font-bold text-sm tracking-tight leading-tight cursor-pointer">HederaMind</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">HOL Agent</p>
           </div>
         </button>
 
-        {/* Agent on-chain identity */}
-        <AgentCard agent={agent} loading={loading} />
+        <div className="space-y-6">
+          {/* Component styling is inherited from their own files, but wrapped here */}
+          <section>
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-1">Identity</p>
+             <AgentCard agent={agent} loading={loading} />
+          </section>
 
-        {/* MetaMask wallet (optional) */}
-        <WalletPanel onAskAboutWallet={handleAskAboutWallet} />
+          <section>
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-1">Connection</p>
+             <WalletPanel onAskAboutWallet={handleAskAboutWallet} />
+          </section>
 
-        {/* HCS on-chain broadcast */}
-        <HCSBroadcast />
+          <section>
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-1">On-Chain Write</p>
+             <HCSBroadcast />
+          </section>
+        </div>
 
         {/* Footer links */}
-        <div className="mt-auto space-y-2 text-[11px] text-gray-600">
-          <p>All data pulled live from Hedera testnet via Mirror Node.</p>
-          <a
-            href="https://hol.org/registry"
-            target="_blank"
-            rel="noreferrer"
-            className="block text-hedera-purple hover:underline"
-          >
-            View in HOL Registry →
+        <div className="mt-auto pt-6 border-t border-slate-200/50 space-y-3 text-[12px] text-slate-500 font-medium">
+          <a href="https://hol.org/registry" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-indigo-600">
+            <span>HOL Registry</span>
+            <span>→</span>
           </a>
-          <a
-            href="https://hashscan.io/testnet"
-            target="_blank"
-            rel="noreferrer"
-            className="block text-hedera-purple hover:underline"
-          >
-            Open Hashscan Explorer →
+          <a href="https://hashscan.io/testnet" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-indigo-600">
+            <span>Hashscan Explorer</span>
+            <span>→</span>
           </a>
         </div>
       </aside>
 
       {/* Chat main area */}
-      <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="border-b border-hedera-border px-6 py-3 flex items-center justify-between shrink-0">
+      <main className="flex-1 flex flex-col overflow-hidden bg-white">
+        <header className="border-b border-slate-100 px-8 py-4 flex items-center justify-between shrink-0 bg-white/80 backdrop-blur-md">
           <div>
-            <p className="font-medium text-sm">Chat with HederaMind</p>
-            <p className="text-[11px] text-gray-500">
-              Ask about accounts, tokens, transactions, or network stats
+            <p className="font-bold text-sm text-slate-900 tracking-tight">Agent Terminal</p>
+            <p className="text-[11px] text-slate-400 font-medium">
+              Connected to Mirror Node • Gemini 2.5 Flash
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-[11px] text-gray-500">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-              Hedera testnet
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 bg-green-50 px-2.5 py-1 rounded-full border border-green-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-[10px] font-bold text-green-700 uppercase tracking-wider">Testnet</span>
             </div>
             <button
-              onClick={() => navigate("/connect")}
-              className="text-[11px] px-3 py-1.5 rounded-lg border border-hedera-border text-gray-500 hover:text-gray-300 hover:border-hedera-purple/40 transition-colors"
+              onClick={() => navigate("/docs")}
+              className="text-xs font-bold text-slate-400 hover:text-black transition-colors cursor-pointer"
             >
-              Wallet
+              Docs
             </button>
           </div>
         </header>
 
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden relative">
+          {/* Subtle background texture for chat area */}
+          <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
           <ChatWindow ref={chatRef} />
         </div>
       </main>

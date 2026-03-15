@@ -33,69 +33,84 @@ export function HCSBroadcast() {
   };
 
   return (
-    <div className="bg-hedera-card border border-hedera-border rounded-2xl p-4 space-y-3">
-      <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-teal-500/20 flex items-center justify-center">
-          <svg className="w-3 h-3 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center border border-emerald-100 shadow-sm">
+          <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
           </svg>
         </div>
-        <p className="text-sm font-medium text-white">Broadcast to Hedera</p>
+        <div>
+          <p className="text-sm font-black text-slate-900 leading-none tracking-tight">HCS Broadcast</p>
+          <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mt-1">On-Chain Anchor</p>
+        </div>
       </div>
 
-      <p className="text-xs text-gray-500">
-        Submit a message to your agent's HCS outbound topic — permanently recorded on Hedera.
+      <p className="text-xs text-slate-500 font-medium leading-relaxed mb-4">
+        Record a permanent message to your agent's outbound HCS topic.
       </p>
 
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Enter a message to broadcast on-chain..."
+        placeholder="Type a message to anchor on-chain..."
         rows={2}
         disabled={loading}
-        className="w-full bg-hedera-dark border border-hedera-border rounded-xl px-3 py-2 text-xs text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-teal-500/50 disabled:opacity-50 transition-colors"
+        className="w-full bg-slate-50 border-2 border-slate-100 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 placeholder-slate-300 resize-none focus:outline-none focus:border-emerald-500/50 focus:bg-white transition-all mb-4"
       />
 
       <button
         onClick={() => void submit()}
         disabled={!content.trim() || loading}
-        className="w-full py-2 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 border border-teal-500/30 text-teal-300 text-xs font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full py-3 rounded-xl bg-slate-900 hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-md active:scale-[0.98] disabled:opacity-20 cursor-pointer"
       >
-        {loading ? "Submitting to Hedera..." : "Submit on-chain"}
+        {loading ? "Anchoring to Hedera..." : "Submit to Consensus"}
       </button>
 
-      {/* Success */}
+      {/* Success View */}
       {result && (
-        <div className="bg-green-900/20 border border-green-800/40 rounded-xl p-3 space-y-1.5">
-          <p className="text-xs text-green-400 font-medium">Message submitted</p>
-          <div className="text-[10px] text-gray-400 space-y-1">
-            <div className="flex justify-between">
-              <span>Topic</span>
-              <span className="font-mono text-gray-300">{result.topicId}</span>
+        <div className="mt-4 bg-emerald-50 border-2 border-emerald-100 rounded-xl p-4 animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center">
+                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
             </div>
-            <div className="flex justify-between">
-              <span>Time</span>
-              <span className="text-gray-300">
+            <p className="text-[11px] font-black text-emerald-700 uppercase">Message Anchored</p>
+          </div>
+          
+          <div className="space-y-2 mb-3">
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-bold text-emerald-600/70 uppercase">Topic ID</span>
+              <span className="font-mono text-[11px] font-bold text-emerald-900">{result.topicId}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-bold text-emerald-600/70 uppercase">Time</span>
+              <span className="text-[11px] font-bold text-emerald-900">
                 {new Date(result.timestamp).toLocaleTimeString()}
               </span>
             </div>
           </div>
+          
           <a
             href={result.hashscanUrl}
             target="_blank"
             rel="noreferrer"
-            className="block text-center text-[10px] text-teal-400 hover:underline pt-1"
+            className="block text-center py-2 bg-white border border-emerald-200 rounded-lg text-[10px] font-black text-emerald-600 hover:bg-emerald-100 transition-colors uppercase tracking-tight shadow-sm"
           >
-            View on Hashscan →
+            Verify on Hashscan ↗
           </a>
         </div>
       )}
 
-      {/* Error */}
+      {/* Error View */}
       {error && (
-        <p className="text-xs text-red-400 bg-red-900/20 rounded-xl px-3 py-2">
-          {error}
-        </p>
+        <div className="mt-4 bg-red-50 border-2 border-red-100 rounded-xl px-4 py-3">
+          <p className="text-[11px] font-bold text-red-600">
+            ⚠️ {error}
+          </p>
+        </div>
       )}
     </div>
   );

@@ -17,13 +17,14 @@ export function ToolCallBadge({ tools }: Props) {
   if (!tools.length) return null;
 
   return (
-    <div className="flex flex-wrap gap-1 mt-2">
+    <div className="flex flex-wrap gap-1.5 mt-3">
       {tools.map((t) => (
         <span
           key={t}
-          className="text-[10px] px-2 py-0.5 rounded-full bg-hedera-purple/20 text-purple-300 border border-hedera-purple/30 font-mono"
+          className="inline-flex items-center gap-1 text-[9px] px-2 py-1 rounded-md bg-indigo-50 text-indigo-700 border-2 border-indigo-100 font-mono font-black uppercase tracking-tighter shadow-sm"
         >
-          ⚡ {TOOL_LABELS[t] ?? t}
+          <span className="text-indigo-400">⚡</span>
+          {TOOL_LABELS[t] ?? t}
         </span>
       ))}
     </div>
