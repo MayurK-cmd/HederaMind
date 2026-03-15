@@ -13,15 +13,15 @@ export const getHbarPriceTool = tool(
       const { usd, usd_24h_change } = data["hedera-hashgraph"];
       const change = usd_24h_change.toFixed(2);
       const direction = usd_24h_change >= 0 ? "▲" : "▼";
-      return `HBAR price: $${usd.toFixed(5)} USD  ${direction} ${change}% (24h)`;
+      // Return explicit formatted string — do not summarise this
+      return `HBAR price: $${usd.toFixed(6)} USD  ${direction} ${change}% (24h change). Source: CoinGecko.`;
     } catch {
-      return "Could not fetch HBAR price right now. Try again in a moment.";
+      return "ERROR: Could not fetch HBAR price from CoinGecko. The API may be temporarily unavailable.";
     }
   },
   {
     name: "getHbarPrice",
-    description:
-      "Get the current HBAR price in USD including 24-hour price change percentage.",
+    description: "Get the current HBAR price in USD with 24h change. Always call this when asked about HBAR price.",
     schema: z.object({}),
   }
 );
@@ -37,17 +37,11 @@ export const getNetworkStatsTool = tool(
         released_supply: string;
         timestamp: string;
       };
-
-      const total = (Number(data.total_supply) / 1e8).toLocaleString();
+      const total    = (Number(data.total_supply)    / 1e8).toLocaleString();
       const released = (Number(data.released_supply) / 1e8).toLocaleString();
-
-      return [
-        `Network: Hedera Testnet`,
-        `Total HBAR supply: ${total} HBAR`,
-        `Released supply: ${released} HBAR`,
-      ].join("\n");
+      return `Hedera network stats:\n- Network: Testnet\n- Total HBAR supply: ${total} HBAR\n- Released supply: ${released} HBAR`;
     } catch {
-      return "Could not fetch network stats right now.";
+      return "ERROR: Could not fetch network stats from Hedera Mirror Node.";
     }
   },
   {

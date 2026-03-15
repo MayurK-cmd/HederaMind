@@ -6,17 +6,16 @@ export const getAccountBalanceTool = tool(
   async ({ accountId }) => {
     try {
       const hbar = await mirrorNode.getAccountBalance(accountId);
-      return `Account ${accountId} has a balance of ${hbar.toFixed(4)} HBAR.`;
+      return `Account ${accountId} balance: ${hbar.toFixed(4)} HBAR (${(hbar * 1e8).toLocaleString()} tinybars). Data from Hedera testnet Mirror Node.`;
     } catch {
-      return `Could not fetch balance for ${accountId}. Make sure the account ID is valid (e.g. 0.0.1234).`;
+      return `ERROR: Could not fetch balance for account ${accountId}. The account may not exist on Hedera testnet. Valid format: 0.0.1234`;
     }
   },
   {
     name: "getAccountBalance",
-    description:
-      "Get the current HBAR balance of a Hedera account. Input must be a valid Hedera account ID like 0.0.1234.",
+    description: "Get the current HBAR balance of a Hedera account. Input: account ID like 0.0.1234",
     schema: z.object({
-      accountId: z.string().describe("Hedera account ID, e.g. 0.0.1234"),
+      accountId: z.string().describe("Hedera account ID e.g. 0.0.1234"),
     }),
   }
 );
@@ -25,26 +24,18 @@ export const getAccountInfoTool = tool(
   async ({ accountId }) => {
     try {
       const info = await mirrorNode.getAccountInfo(accountId);
-      const hbar = info.balance.balance / 1e8;
-      const created = new Date(
-        Number(info.created_timestamp) * 1000
-      ).toLocaleDateString();
-      return [
-        `Account: ${info.account}`,
-        `Balance: ${hbar.toFixed(4)} HBAR`,
-        `Created: ${created}`,
-        `Memo: ${info.memo || "none"}`,
-      ].join("\n");
+      const hbar    = info.balance.balance / 1e8;
+      const created = new Date(Number(info.created_timestamp) * 1000).toLocaleDateString();
+      return `Account ${info.account}:\n- Balance: ${hbar.toFixed(4)} HBAR\n- Created: ${created}\n- Memo: ${info.memo || "none"}`;
     } catch {
-      return `Could not fetch info for ${accountId}.`;
+      return `ERROR: Could not fetch info for account ${accountId}. Check the account ID format (e.g. 0.0.1234) and ensure it exists on testnet.`;
     }
   },
   {
     name: "getAccountInfo",
-    description:
-      "Get detailed information about a Hedera account including balance, creation date, and memo.",
+    description: "Get detailed info about a Hedera account: balance, creation date, memo.",
     schema: z.object({
-      accountId: z.string().describe("Hedera account ID, e.g. 0.0.1234"),
+      accountId: z.string().describe("Hedera account ID e.g. 0.0.1234"),
     }),
   }
 );
