@@ -1,121 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { AgentCard } from "./components/AgentCard";
+import { ChatWindow } from "./components/ChatWindow";
+import { useAgent } from "./hooks/useAgent";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { agent, loading } = useAgent();
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="flex h-screen overflow-hidden bg-hedera-dark">
+      {/* Sidebar */}
+      <aside className="w-72 shrink-0 border-r border-hedera-border flex flex-col p-4 gap-4 overflow-y-auto">
+        {/* Logo */}
+        <div className="flex items-center gap-2 py-1">
+          <div className="w-8 h-8 rounded-lg bg-hedera-purple flex items-center justify-center text-sm font-bold">
+            H
+          </div>
+          <div>
+            <p className="font-semibold text-sm leading-tight">HederaMind</p>
+            <p className="text-[10px] text-gray-500">HOL Registry Agent</p>
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+        {/* Agent on-chain identity */}
+        <AgentCard agent={agent} loading={loading} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        {/* Quick info */}
+        <div className="mt-auto space-y-2 text-[11px] text-gray-600">
+          <p>All data is pulled live from Hedera testnet via Mirror Node.</p>
+          <a
+            href="https://hol.org/registry"
+            target="_blank"
+            rel="noreferrer"
+            className="block text-hedera-purple hover:underline"
+          >
+            View in HOL Registry →
+          </a>
+          <a
+            href="https://hashscan.io/testnet"
+            target="_blank"
+            rel="noreferrer"
+            className="block text-hedera-purple hover:underline"
+          >
+            Open Hashscan Explorer →
+          </a>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </aside>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* Chat main area */}
+      <main className="flex-1 flex flex-col overflow-hidden">
+        {/* Top bar */}
+        <header className="border-b border-hedera-border px-6 py-3 flex items-center justify-between shrink-0">
+          <div>
+            <p className="font-medium text-sm">Chat with HederaMind</p>
+            <p className="text-[11px] text-gray-500">
+              Ask about accounts, tokens, transactions, or network stats
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-[11px] text-gray-500">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
+            Hedera testnet
+          </div>
+        </header>
+
+        {/* Chat */}
+        <div className="flex-1 overflow-hidden">
+          <ChatWindow />
+        </div>
+      </main>
+    </div>
+  );
 }
-
-export default App
