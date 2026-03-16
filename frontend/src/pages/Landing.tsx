@@ -6,7 +6,7 @@ export function Landing() {
   const [status, setStatus] = useState("checking");
 
   useEffect(() => {
-    fetch("https://hederamind.onrender.com/health")
+    fetch("https://hederamind-kr9m.onrender.com/health")
       .then((res) => res.json())
       .then((data) => setStatus(data.status === "ok" ? "online" : "error"))
       .catch(() => setStatus("offline"));
